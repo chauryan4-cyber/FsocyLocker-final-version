@@ -146,7 +146,7 @@ def decrypt_files_in_all_drives():
                                 
                                 os.remove(file_path)
                         except Exception as e:
-                            print(f"[!] Lỗi giải mã file {file_path}: {e}")
+                            print(f"[!] error {file_path}: {e}")
         print("[+] done.")
     except Exception as e:
         print(f"[!] error: {e}")
